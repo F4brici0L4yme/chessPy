@@ -82,3 +82,11 @@ class Picture:
     
     return Picture(rotated_img)
 
+  def scale(self, size):
+        """Escalar la imagen de la pieza al tamaño dado"""
+        scaled_img = []
+        for line in self.img:
+            # Aquí deberías procesar cada línea de la imagen para que se ajuste al tamaño de la casilla
+            # Pero, como es un conjunto de caracteres, puede que no necesites escalar, solo dibujarlos de forma proporcional
+            scaled_img.append(line)  # Este es un ejemplo, aquí puedes escalar de acuerdo con el tamaño
+        return Picture(scaled_img)
