@@ -1,4 +1,5 @@
 from colors import *
+import pygame
 class Picture:
   def __init__(self, img):
     self.img = img;
@@ -90,3 +91,11 @@ class Picture:
             # Pero, como es un conjunto de caracteres, puede que no necesites escalar, solo dibujarlos de forma proporcional
             scaled_img.append(line)  # Este es un ejemplo, aquí puedes escalar de acuerdo con el tamaño
         return Picture(scaled_img)
+
+  def dibujar_tablero(self, superficie, tamaño_tablero, tamaño_casilla, color_blanco, color_oscuro):
+      for fila in range(tamaño_tablero):
+          for columna in range(tamaño_tablero):
+              sombra = (fila + columna) % 2
+              color_casilla = color_blanco if sombra == 0 else color_oscuro
+              rectangulo = pygame.Rect(columna * tamaño_casilla, fila * tamaño_casilla, tamaño_casilla, tamaño_casilla)
+              pygame.draw.rect(superficie, color_casilla, rectangulo)

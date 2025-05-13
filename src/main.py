@@ -1,82 +1,52 @@
 import pygame
-import sys
 from pygame.locals import *
-import pieces
-from colors import color, inverter
+from chessPictures import *
+from colors import *
+from interpreter import draw
+from picture import Picture
 
-def main(): #
-    pygame.init()
-    TAMAÑO_TABLERO = 8
-    TAMAÑO_CASILLA = 60
-    ANCHO = ALTO = TAMAÑO_TABLERO * TAMAÑO_CASILLA
-    
-    posicion_inicial = [ #
-        list("rnbqkbnr"),
-        list("pppppppp"),
-        list("........"),
-        list("........"),
-        list("........"),
-        list("........"),
-        list("PPPPPPPP"),
-        list("RNBQKBNR"),
-    ]
+first_row = [rock, knight, bishop, queen, king, bishop, knight, rock]
+pawn_row = [pawn] * 8
 
-    ARTE_PIEZA = { #
-        'b': pieces.BISHOP, 'B': pieces.BISHOP,
-        'k': pieces.KING,   'K': pieces.KING,
-        'n': pieces.KNIGHT, 'N': pieces.KNIGHT,
-        'p': pieces.PAWN,   'P': pieces.PAWN,
-        'q': pieces.QUEEN,  'Q': pieces.QUEEN,
-        'r': pieces.ROCK,   'R': pieces.ROCK,
-    }
+def create_chessboard():
+    board = []
+    for row in range(8):
+        board_row = []
+        for col in range(8):
+            if (row + col) % 2 == 0:
+                board_row.append(square)
+            else:
+                board_row.append(square.negative())
+        board.append(board_row)
+    return board
 
-    def dibujo(arte, invertir=False):
-        filas = len(arte)
-        columnas = len(arte[0])
-        superficie = pygame.Surface((columnas, filas), pygame.SRCALPHA)
-        for y, fila in enumerate(arte):
-            for x, c in enumerate(fila):
-                if c == ' ':
-                    continue
-                color_pieza = color.get(c, (0, 0, 0))
-                if invertir:
-                    color_pieza = color.get(inverter.get(c, c), color_pieza)
-                superficie.set_at((x, y), color_pieza)
-        return pygame.transform.smoothscale(superficie, (TAMAÑO_CASILLA, TAMAÑO_CASILLA))
+def place_pieces(board):
+    for col in range(8):
+        board[7][col] = board[7][col].under(first_row[col])
+        board[6][col] = board[6][col].under(pawn)
+        
+    for col in range(8):
+        board[0][col] = board[0][col].under(first_row[col].negative())
+        board[1][col] = board[1][col].under(pawn.negative())
 
-    superficies_piezas = {}
-    for simbolo, arte in ARTE_PIEZA.items():
-        invertir = simbolo.islower()
-        superficies_piezas[simbolo] = dibujo(arte, invertir=invertir)
+    return board
 
-    COLOR_BLANCO = (245, 245, 245)
-    COLOR_OSCURO = (100, 100, 100)
+def build_full_board(board):
+    rows = []
+    for row in board:
+        row_picture = row[0]
+        for col in row[1:]:
+            row_picture = row_picture.join(col)
+        rows.append(row_picture)
 
-    pantalla = pygame.display.set_mode((ANCHO, ALTO))
-    pygame.display.set_caption("Tablero de Ajedrez")
-    reloj = pygame.time.Clock()
+    full_board = rows[0]
+    for row_picture in rows[1:]:
+        full_board = full_board.up(row_picture)
 
-    while True:
-        for evento in pygame.event.get(): #
-            if evento.type == QUIT:
-                pygame.quit()
-                sys.exit()
+    return full_board
 
-        for fila in range(TAMAÑO_TABLERO):
-            for columna in range(TAMAÑO_TABLERO):
-
-                sombra = (fila + columna) % 2
-                color_casilla = COLOR_BLANCO if sombra == 0 else COLOR_OSCURO
-                rectangulo = pygame.Rect(columna * TAMAÑO_CASILLA, fila * TAMAÑO_CASILLA, TAMAÑO_CASILLA, TAMAÑO_CASILLA)
-                pygame.draw.rect(pantalla, color_casilla, rectangulo)
-
-                simbolo = posicion_inicial[fila][columna]
-                if simbolo != '.':
-                    superficie = superficies_piezas.get(simbolo)
-                    if superficie:
-                        pantalla.blit(superficie, rectangulo)
-
-        pygame.display.flip() #
-
-if __name__ == '__main__':
-    main()
+if __name__ == "__main__":
+    board = create_chessboard()
+    board = place_pieces(board)
+    full_board_picture = build_full_board(board)
+    draw(full_board_picture)
