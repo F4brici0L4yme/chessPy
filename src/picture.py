@@ -15,7 +15,6 @@ class Picture:
     vertical = [row[::-1] for row in self.img[::-1]]
     return Picture(vertical)
 
-
   def horizontalMirror(self):
     horizontal = []
     for value in self.img:
@@ -23,8 +22,12 @@ class Picture:
     return Picture(horizontal)
 
   def negative(self):
-    """ Devuelve un negativo de la imagen """
-    return Picture(None)
+      """ Devuelve un negativo de la imagen """
+      negative_img = [
+          "".join(self._invColor(char) for char in row)
+          for row in self.img
+      ]
+      return Picture(negative_img)
 
   def join(self, p):
     """ Devuelve una nueva figura poniendo la figura del argumento
