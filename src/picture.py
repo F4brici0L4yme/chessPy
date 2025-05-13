@@ -45,14 +45,22 @@ class Picture:
       return Picture(up_img)
 
   def under(self, p):
-    """ Devuelve una nueva figura poniendo la figura p sobre la
-        figura actual """
-    return Picture(None)
+    """ Devuelve una nueva figura poniendo la figura recibida como argumento
+        sobre la figura actual """
+    under_img = [
+        ''.join([pc if pc != ' ' else sc for pc, sc in zip(p_line, s_line)])
+        for p_line, s_line in zip(p.img, self.img)
+    ]
+    return Picture(under_img)
+
   
   def horizontalRepeat(self, n):
     """ Devuelve una nueva figura repitiendo la figura actual al costado
         la cantidad de veces que indique el valor de n """
-    return Picture(None)
+    repeated_img = [
+        ''.join([line for _ in range(n)]) for line in self.img
+    ]
+    return Picture(repeated_img)
 
   def verticalRepeat(self, n):
     return Picture(None)
