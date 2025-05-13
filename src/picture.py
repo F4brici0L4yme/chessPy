@@ -30,12 +30,19 @@ class Picture:
       return Picture(negative_img)
 
   def join(self, p):
-    """ Devuelve una nueva figura poniendo la figura del argumento
+    """ Devuelve una nueva figura poniendo la figura del argumento 
         al lado derecho de la figura actual """
-    return Picture(None)
+    joined_img = [
+        self_row + p_row
+        for self_row, p_row in zip(self.img, p.img)
+    ]
+    return Picture(joined_img)
 
   def up(self, p):
-    return Picture(None)
+      """ Devuelve una nueva figura poniendo la figura recibida como argumento
+          encima de la figura actual """
+      up_img = p.img + self.img
+      return Picture(up_img)
 
   def under(self, p):
     """ Devuelve una nueva figura poniendo la figura p sobre la
