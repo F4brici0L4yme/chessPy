@@ -12,10 +12,9 @@ class Picture:
     return inverter[color]
 
   def verticalMirror(self):
-    vertical = []
-    for value in self.img:
-      vertical.append(value[::-1])
+    vertical = [row[::-1] for row in self.img[::-1]]
     return Picture(vertical)
+
 
   def horizontalMirror(self):
     horizontal = []
@@ -28,7 +27,7 @@ class Picture:
     return Picture(None)
 
   def join(self, p):
-    """ Devuelve una nueva figura poniendo la figura del argumento 
+    """ Devuelve una nueva figura poniendo la figura del argumento
         al lado derecho de la figura actual """
     return Picture(None)
 
