@@ -63,11 +63,22 @@ class Picture:
     return Picture(repeated_img)
 
   def verticalRepeat(self, n):
-    return Picture(None)
+    """ Devuelve una nueva figura repitiendo la figura actual debajo,
+        la cantidad de veces que indique el valor de n """
+    repeated_img = []
+    for _ in range(n):
+        repeated_img += self.img
+    return Picture(repeated_img)
 
-  #Extra: Sólo para realmente viciosos 
-  def rotate(self):
-    """Devuelve una figura rotada en 90 grados, puede ser en sentido horario
-    o antihorario"""
-    return Picture(None)
+  #Extra: Sólo para realmente viciosos
+  def rotate(self, sentido):
+    """ Devuelve una figura rotada en 90 grados (horario) """
+    if sentido == 'a':
+        rotated_img = [''.join(row) for row in zip(*self.img[::-1])]
+    elif sentido == 'h':
+        rotated_img = [''.join(row[::-1]) for row in zip(*self.img)]
+    else:
+        raise ValueError("pámetro inválido")
+    
+    return Picture(rotated_img)
 
