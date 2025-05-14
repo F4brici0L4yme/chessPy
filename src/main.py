@@ -3,9 +3,8 @@ from pygame.locals import *
 from chessPictures import *
 from colors import *
 from interpreter import draw
-from picture import Picture
 
-first_row = [rock, knight, bishop, queen, king, bishop, knight, rock]
+first_row = [rock, knight, bishop, queen, king, bishop, knight, rock] #
 pawn_row = [pawn] * 8
 
 def create_chessboard():
@@ -16,13 +15,13 @@ def create_chessboard():
             if (row + col) % 2 == 0:
                 board_row.append(square)
             else:
-                board_row.append(square.negative())
+                board_row.append(square.negative()) #
         board.append(board_row)
     return board
 
 def place_pieces(board):
     for col in range(8):
-        board[7][col] = board[7][col].under(first_row[col])
+        board[7][col] = board[7][col].under(first_row[col]) #
         board[6][col] = board[6][col].under(pawn)
         
     for col in range(8):
@@ -36,12 +35,12 @@ def build_full_board(board):
     for row in board:
         row_picture = row[0]
         for col in row[1:]:
-            row_picture = row_picture.join(col)
+            row_picture = row_picture.join(col) #
         rows.append(row_picture)
 
     full_board = rows[0]
     for row_picture in rows[1:]:
-        full_board = full_board.up(row_picture)
+        full_board = full_board.up(row_picture) #
 
     return full_board
 

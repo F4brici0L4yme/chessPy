@@ -31,7 +31,7 @@ class Picture:
       return Picture(negative_img)
 
   def join(self, p):
-    """ Devuelve una nueva figura poniendo la figura del argumento 
+    """ Devuelve una nueva figura poniendo la figura del argumento
         al lado derecho de la figura actual """
     joined_img = [
         self_row + p_row
